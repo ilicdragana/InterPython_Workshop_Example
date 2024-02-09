@@ -8,8 +8,6 @@ in a single or different bands.
 """
 
 import pandas as pd
-import numpy as np
-from astropy.timeseries import LombScargle
 
 def load_dataset(filename):
     """Load a table from CSV file.
@@ -45,3 +43,29 @@ def min_mag(data,mag_col):
     :returns: The min value of the column.
     """
     return data[mag_col].min()
+
+
+def calc_stats(lc, bands, mag_col):
+    """ Calculate max, mean and min values for all bands of a light curve.
+    :param mag_col: a string with the name of the column for calculating the max/mean/min value.
+    :returns: The max/mean/min value for each band (column).    
+    """
+    stats = {}
+    for b in bands:
+        stat = {}
+        stat["max"] = max_mag(lc[b], mag_col)
+        stat["mean"] = mean_mag(lc[b], mag_col)
+        stat["min"] = min_mag(lc[b], mag_col)
+        stats[b] = stat
+    return pd.DataFrame.from_records(stats)
+
+
+def normalize_lc(df,mag_col):
+    # Normalize a light curve
+    if any(df[mag_col].abs() > 90):
+        raise ValueError(mag_col+' contains values with abs() larger than 90!')
+    min_data = min_mag(df,mag_col)
+    max_data = max_mag((df-min_data),mag_col)
+    lc = (df[mag_col]-min_data)/max_data
+    lc = lc.fillna(0)
+    return lc
