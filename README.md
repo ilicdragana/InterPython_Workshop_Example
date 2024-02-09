@@ -1,5 +1,5 @@
 # LcAnalyzer
-![Continuous Integration build in GitHub Actions](https://github.com/ilicdragana/light-curve-analysis/workflows/CI/badge.svg?branch=main)
+![Continuous Integration build in GitHub Actions](https://github.com/ilicdragana/light-curve-analysis/workflows/CI/badge.svg)
 LcAnalyzer is a package written in Python that allows you to inspect light curves.
 
 ## Main features
